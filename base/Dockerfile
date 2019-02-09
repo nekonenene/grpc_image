@@ -11,7 +11,7 @@ RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
 # Support tools for development
 RUN go get -u github.com/golang/dep/cmd/dep
-RUN go get github.com/fullstorydev/grpcurl
+RUN go get -u github.com/fullstorydev/grpcurl/cmd/grpcurl
 
 RUN echo "alias ls='ls --color=auto'" >> $HOME/.bashrc
 
