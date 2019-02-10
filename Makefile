@@ -7,16 +7,16 @@ LOGGER_CONTAINER_NAME := grpc_hello_logger_01
 LISTEN_PORT := 50051
 LOGGER_PORT := 50052
 
-go_path := $(shell echo "${GOPATH}" | awk -F '[:]' '{print ${1}}')
+local_gopath := $(shell echo "${GOPATH}" | awk -F '[:]' '{print ${1}}')
 
 .PHONY: init
 init:
-	mkdir -p $(go_path)/src/nekonenene/hello
-	ln -sf $(shell pwd)/hello/src/pb $(go_path)/src/nekonenene/hello/pb
+	mkdir -p $(local_gopath)/src/nekonenene/hello
+	ln -sf $(shell pwd)/hello/src/pb $(local_gopath)/src/nekonenene/hello/pb
 
 .PHONY: clean
 clean:
-	rm $(go_path)/src/nekonenene/hello/pb
+	rm $(local_gopath)/src/nekonenene/hello/pb
 
 .PHONY: build
 build:
@@ -74,6 +74,7 @@ login_base:
 login_hello:
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
 		-p $(LISTEN_PORT):50051 \
+		-v $(shell pwd)/hello/src:/go/src/nekonenene/hello \
 		grpc_hello:latest \
 		/bin/bash
 
