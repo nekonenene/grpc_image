@@ -4,4 +4,4 @@ WORKDIR ${GOPATH}/src/nekonenene/hello
 
 ADD src .
 
-CMD ["/bin/bash"]
+CMD ["go", "run", "main.go"]

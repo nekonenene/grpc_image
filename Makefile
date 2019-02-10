@@ -28,12 +28,6 @@ build_hello:
 	docker build hello \
 		-t grpc_hello:latest
 
-.PHONY: run_base
-run_base:
-	docker run -it --rm --name $(BASE_CONTAINER_NAME) \
-		-p $(LISTEN_PORT):50051 \
-		grpc_base:latest
-
 .PHONY: run_hello
 run_hello:
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
@@ -47,3 +41,17 @@ pb_hello:
 		-v $(shell pwd)/hello/src/pb:/pb \
 		grpc_hello:latest \
 		protoc pb/hello.proto --go_out plugins=grpc:/
+
+.PHONY: login_base
+login_base:
+	docker run -it --rm --name $(BASE_CONTAINER_NAME) \
+		-p $(LISTEN_PORT):50051 \
+		grpc_base:latest \
+		/bin/bash
+
+.PHONY: login_hello
+login_hello:
+	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
+		-p $(LISTEN_PORT):50051 \
+		grpc_hello:latest \
+		/bin/bash
