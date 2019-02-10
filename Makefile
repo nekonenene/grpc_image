@@ -17,6 +17,9 @@ build:
 	$(MAKE) build_base
 	$(MAKE) build_hello
 
+.PHONY: run
+run: run_hello
+
 .PHONY: build_base
 build_base:
 	docker build base \
@@ -38,9 +41,9 @@ run_hello:
 .PHONY: pb_hello
 pb_hello:
 	docker run --rm --name $(BASE_CONTAINER_NAME) \
-		-v $(shell pwd)/hello/src/pb:/pb \
+		-v $(shell pwd)/hello/src/pb:/tmp/pb \
 		grpc_hello:latest \
-		protoc pb/hello.proto --go_out plugins=grpc:/
+		protoc pb/hello.proto --go_out plugins=grpc:/tmp
 
 .PHONY: login_base
 login_base:
