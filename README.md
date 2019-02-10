@@ -14,6 +14,10 @@ gRPC with Go (golang) and Docker
     ```sh
     make build
     ```
+    Or, define [the version of protoc](https://github.com/protocolbuffers/protobuf/releases).  
+    ```sh
+    make build PROTOC_VER=x.x.x
+    ```
 2. Run the container to start the gRPC server.  
     ```sh
     make run
