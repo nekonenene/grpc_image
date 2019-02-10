@@ -20,6 +20,7 @@ RUN \
   apt-get install -y \
     less \
     unzip \
+    vim \
     wget
 
 # Install protoc
