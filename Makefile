@@ -59,3 +59,11 @@ login_hello:
 		-p $(LISTEN_PORT):50051 \
 		grpc_hello:latest \
 		/bin/bash
+
+.PHONY: push
+push:
+	$(MAKE) build_base
+	docker tag grpc_base:$(PROTOC_VER) nekonenene/grpc_base:$(PROTOC_VER)
+	docker tag grpc_base:latest        nekonenene/grpc_base:latest
+	docker push nekonenene/grpc_base:$(PROTOC_VER)
+	docker push nekonenene/grpc_base:latest
