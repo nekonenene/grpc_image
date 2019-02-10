@@ -24,6 +24,7 @@ run: run_hello
 build_base:
 	docker build base \
 		--build-arg protoc_version=$(PROTOC_VER) \
+		-t grpc_base:$(PROTOC_VER) \
 		-t grpc_base:latest
 
 .PHONY: build_hello
