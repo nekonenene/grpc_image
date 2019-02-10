@@ -4,8 +4,8 @@ PROTOC_VER := 3.6.1
 BASE_CONTAINER_NAME := grpc_base_01
 HELLO_CONTAINER_NAME := grpc_hello_01
 LOGGER_CONTAINER_NAME := grpc_hello_logger_01
-LISTEN_PORT := 50051
-LOGGER_PORT := 50052
+LOGGER_PORT := 50050
+GRPC_HELLO_PORT := 50051
 
 local_gopath := $(shell echo "${GOPATH}" | awk -F '[:]' '{print ${1}}')
 
@@ -41,7 +41,7 @@ build_hello:
 .PHONY: run_hello
 run_hello:
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
-		-p $(LISTEN_PORT):50051 \
+		-p $(GRPC_HELLO_PORT):50051 \
 		grpc_hello:latest
 
 .PHONY: run_hello_with_logger
@@ -50,7 +50,7 @@ run_hello_with_logger:
 	- $(MAKE) stop_fluentd
 	$(MAKE) run_fluentd
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
-		-p $(LISTEN_PORT):50051 \
+		-p $(GRPC_HELLO_PORT):50051 \
 		--log-driver fluentd \
 		--log-opt fluentd-address=localhost:$(LOGGER_PORT) \
 		grpc_hello:latest
@@ -66,14 +66,14 @@ pb_hello:
 .PHONY: login_base
 login_base:
 	docker run -it --rm --name $(BASE_CONTAINER_NAME) \
-		-p $(LISTEN_PORT):50051 \
+		-p $(GRPC_HELLO_PORT):50051 \
 		grpc_base:latest \
 		/bin/bash
 
 .PHONY: login_hello
 login_hello:
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
-		-p $(LISTEN_PORT):50051 \
+		-p $(GRPC_HELLO_PORT):50051 \
 		-v $(shell pwd)/hello/src:/go/src/nekonenene/hello \
 		grpc_hello:latest \
 		/bin/bash
