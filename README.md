@@ -14,7 +14,7 @@ gRPC with Go (golang) and Docker
     ```sh
     make build
     ```
-2. Run server.  
+2. Run the container to start the gRPC server.  
     ```sh
     make run
     ```
@@ -22,7 +22,7 @@ gRPC with Go (golang) and Docker
 
 ## Development
 
-1. Put symlink, but **it's not necessary** if you develop in the docker image.  
+1. Put symlink, but **it's not necessary** if you develop in the docker container.  
     ```sh
     make init
     ```
@@ -30,7 +30,7 @@ gRPC with Go (golang) and Docker
     ```sh
     make pb_hello
     ```
-3. Whn update `main.go`, rebuild and rerun the image.
+3. Whn update `main.go`, rebuild the image and rerun the container.
     ```sh
     make build_hello
     make run_hello
