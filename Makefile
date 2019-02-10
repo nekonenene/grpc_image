@@ -3,7 +3,9 @@ PROTOC_VER := 3.6.1
 
 BASE_CONTAINER_NAME := grpc_base_01
 HELLO_CONTAINER_NAME := grpc_hello_01
+LOGGER_CONTAINER_NAME := grpc_hello_logger_01
 LISTEN_PORT := 50051
+LOGGER_PORT := 50052
 
 go_path := $(shell echo "${GOPATH}" | awk -F '[:]' '{print ${1}}')
 
@@ -42,6 +44,17 @@ run_hello:
 		-p $(LISTEN_PORT):50051 \
 		grpc_hello:latest
 
+.PHONY: run_hello_with_logger
+run_hello_with_logger:
+	# ignore errors whether failed to stop fluentd
+	- $(MAKE) stop_fluentd
+	$(MAKE) run_fluentd
+	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
+		-p $(LISTEN_PORT):50051 \
+		--log-driver fluentd \
+		--log-opt fluentd-address=localhost:$(LOGGER_PORT) \
+		grpc_hello:latest
+
 # Update hello.pb.go
 .PHONY: pb_hello
 pb_hello:
@@ -71,3 +84,15 @@ push:
 	docker tag grpc_base:latest        nekonenene/grpc_base:latest
 	docker push nekonenene/grpc_base:$(PROTOC_VER)
 	docker push nekonenene/grpc_base:latest
+
+.PHONY: run_fluentd
+run_fluentd:
+	docker run -d --rm --name $(LOGGER_CONTAINER_NAME) \
+		-p $(LOGGER_PORT):24224 \
+		-p $(LOGGER_PORT):24224/udp \
+		-v $(shell pwd)/hello/log:/fluentd/log \
+		fluent/fluentd:stable
+
+.PHONY: stop_fluentd
+stop_fluentd:
+	docker stop $(LOGGER_CONTAINER_NAME)
