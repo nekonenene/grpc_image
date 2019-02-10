@@ -12,6 +12,10 @@ init:
 	mkdir -p $(go_path)/src/nekonenene/hello
 	ln -sf $(shell pwd)/hello/src/pb $(go_path)/src/nekonenene/hello/pb
 
+.PHONY: clean
+clean:
+	rm $(go_path)/src/nekonenene/hello/pb
+
 .PHONY: build
 build:
 	$(MAKE) build_base
