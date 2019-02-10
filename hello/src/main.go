@@ -35,8 +35,7 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 }
 
 func main() {
-	host := fmt.Sprintf("localhost:%d", port)
-	lis, err := net.Listen("tcp", host)
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -60,7 +59,7 @@ func main() {
 
 	grpcServer := grpc.NewServer(opts...)
 	pb.RegisterGreeterServer(grpcServer, &server{})
-	log.Printf("Server started at %s\n", host)
+	log.Printf("Server started at localhost:%d\n", port)
 
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcServer)
