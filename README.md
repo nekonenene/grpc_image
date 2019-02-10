@@ -39,3 +39,10 @@ gRPC with Go (golang) and Docker
     make build_hello
     make run
     ```
+
+
+## Use TLS (SSL)
+
+```sh
+go run main.go -tls -cert_file ./creds/server.crt -key_file ./creds/server.key
+```
