@@ -33,5 +33,5 @@ gRPC with Go (golang) and Docker
 3. When update `main.go`, rebuild the image and rerun the container.
     ```sh
     make build_hello
-    make run_hello
+    make run
     ```
