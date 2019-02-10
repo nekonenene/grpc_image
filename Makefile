@@ -39,3 +39,11 @@ run_hello:
 	docker run -it --rm --name $(HELLO_CONTAINER_NAME) \
 		-p $(LISTEN_PORT):50051 \
 		grpc_hello:latest
+
+# Update hello.pb.go
+.PHONY: pb_hello
+pb_hello:
+	docker run --rm --name $(BASE_CONTAINER_NAME) \
+		-v $(shell pwd)/hello/src/pb:/pb \
+		grpc_hello:latest \
+		protoc pb/hello.proto --go_out plugins=grpc:/
